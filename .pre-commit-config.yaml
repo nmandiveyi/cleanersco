@@ -1,0 +1,23 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+- id: ruff
+  name: ruff
+  description: "Linting for python files"
+  entry: ruff check --force-exclude
+  language: python
+  types_or: [python, pyi, jupyter]
+  args: []
+  require_serial: true
+  additional_dependencies: []
+  minimum_pre_commit_version: "2.9.2"
+
+- id: ruff-format
+  name: ruff-format
+  description: "Format python files"
+  entry: ruff format --force-exclude
+  language: python
+  types_or: [python, pyi, jupyter]
+  args: []
+  require_serial: true
+  additional_dependencies: []
+  minimum_pre_commit_version: "2.9.2"
