@@ -64,8 +64,28 @@ class BasicAuth(AuthenticationBackend):
         auth = request.headers["Authorization"]
         try:
             scheme, credentials = auth.split()
+            if scheme != "Bearer":
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="Authentication Error: Invalid auth scheme"
+                )
+            print(credentials, "Credentials.......", type(credentials))
+            if not credentials or credentials == "null":
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Authentication Error: Missing auth token"
+                )
             decoded = jwt.decode(
-                jwt=credentials, key=settings.secret, algorithms=["HS256"]
+                jwt=credentials,
+                key=settings.secret,
+                algorithms=[settings.jwt_algorithm],
+                options = {
+                    'verify_signature': True,
+                    'verify_exp': True,
+                    'verify_nbf': False,
+                    'verify_iat': True,
+                    'verify_aud': False
+                }
             )
         except (ValueError, UnicodeDecodeError, binascii.Error):
             raise AuthenticationError("Invalid basic auth credentials")
@@ -74,5 +94,6 @@ class BasicAuth(AuthenticationBackend):
             first_name=decoded.get("first_name", None),
             last_name=decoded.get("last_name", None),
             email=decoded.get("email", None),
+            hash=None
         )
         return AuthCredentials([credentials]), user
