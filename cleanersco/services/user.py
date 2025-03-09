@@ -1,7 +1,7 @@
 from time import time
 from bcrypt import checkpw, gensalt, hashpw
 from models.user import LoginPayload, TokenPayload, User
-from services.db import prisma
+from core.services.db import prisma
 from config import settings
 import jwt
 from fastapi import HTTPException, status
@@ -37,6 +37,7 @@ class UserService:
         if valid_password:
             token = jwt.encode(
                 payload={
+                    "sub": user.id,
                     "email": user.email,
                     "first_name": user.first_name,
                     "last_name": user.last_name,

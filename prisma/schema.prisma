@@ -14,9 +14,24 @@ datasource db {
 }
 
 model User {
-  id         Int       @id @default(autoincrement())
-  email      String    @unique
-  first_name  String?
-  last_name  String?
-  hash       String
+  id            Int         @id @default(autoincrement())
+  email         String      @unique
+  first_name    String?
+  last_name     String?
+  hash          String
+  jobs          Job[]
+}
+
+enum JobSize {
+  SMALL
+  MEDIUM
+  LARGE
+}
+
+model Job {
+  id            Int          @id @default(autoincrement())
+  user_id       Int 
+  user          User         @relation(fields: [user_id], references: [id])
+  description   String
+  job_size      JobSize
 }

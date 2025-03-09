@@ -2,9 +2,7 @@ from fastapi import APIRouter
 from services.user import UserService
 from models.user import GetUserPayload, LoginPayload, TokenPayload, User
 
-
 router = APIRouter()
-
 
 @router.post("")
 async def get_user(payload: GetUserPayload) -> User:

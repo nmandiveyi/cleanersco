@@ -3,11 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import UJSONResponse
 from contextlib import asynccontextmanager
 
-from services.auth import AuthMiddleware, BasicAuth
-from services.logger import Logger, RequestLoggingMiddleware
+from core.services.auth import AuthMiddleware, BasicAuth
+from core.services.logger import Logger, RequestLoggingMiddleware
 from utils.docs import attach_api_doc_routes
 from web.api.router import router
-from services.db import prisma
+from core.services.db import prisma
 
 
 api_prefix = "/api/v1"
